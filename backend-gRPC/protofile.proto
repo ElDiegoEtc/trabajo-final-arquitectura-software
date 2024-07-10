@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package messages;
+
+import "google/protobuf/timestamp.proto";
+
+service MessageService {
+  rpc StoreMessage (MessageRequest) returns (MessageResponse);
+  rpc GetMessages (Empty) returns (MessageList);
+}
+
+message MessageRequest {
+  string any_string = 1;
+  google.protobuf.Timestamp datetime = 2;
+  string grpc_string = 3;
+  string status = 4;
+}
+
+message MessageResponse {
+  string status = 1;
+}
+
+message Empty {}
+
+message MessageList {
+  repeated MessageRequest messages = 1;
+}
