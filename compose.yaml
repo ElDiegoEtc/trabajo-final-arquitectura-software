@@ -9,11 +9,17 @@ services:
     networks:
       - net1
 
-  rest-backend:
+  backend-rest:
     build: ./backend-REST
     depends_on:
       db:
         condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/ || exit 1"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
     container_name: REST-server
     ports:
       - "8000:5000"
@@ -23,11 +29,11 @@ services:
     networks:
       - net1
 
-  rest-frontend:
+  frontend-rest:
     build: ./frontend-REST
     depends_on:
-      rest-backend:
-        condition: service_started
+      backend-rest:
+        condition: service_healthy
     container_name: REST-client
     ports:
       - "8001:7777"
