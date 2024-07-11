@@ -9,5 +9,6 @@ RUN apk update && \
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 5000
+EXPOSE 8068
 COPY . .
 CMD ["flask", "run", "--debug"]

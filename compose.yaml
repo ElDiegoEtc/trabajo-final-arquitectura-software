@@ -8,7 +8,6 @@ services:
       - vol1:/data/db
     networks:
       - net1
-
   backend-rest:
     build: ./backend-REST
     depends_on:
@@ -23,6 +22,7 @@ services:
     container_name: REST-server
     ports:
       - "8000:5000"
+      - "8068:8068"
     environment:
       MONGODB_DATABASE: db
       MONGODB_HOSTNAME: mongo1 # debe ser igual a db:container_name
@@ -42,6 +42,16 @@ services:
     networks:
       - net1
 
+  frontend-ws:
+    build: ./frontend-WebSocket
+    depends_on:
+      backend-rest:
+        condition: service_healthy
+    container_name: WebSocket
+    ports:
+      - "8067:8067"
+    networks:
+      - net1 
 # Volumen "bind mount" para almacenamiento local persistente de la base de datos
 volumes:
   vol1:
